@@ -1,0 +1,45 @@
+trigger: 
+ branches:
+   include:
+     - feature/*
+   exclude:
+     - main
+
+# variables: 
+#  - name: PATH
+#    value: $(System.DefaultWorkingDirectory)/env/${{ parameters.environment }}
+
+# parameters:
+#   - name: environment
+#     displayName: dev/test/prod
+#     type: string
+#     default: dev
+#     values:
+#       - dev
+#       - test
+#       - prod
+#       - qa
+
+# PATH '$(System.DefaultWorkingDirectory)/env/${{parameters.environment}}'
+
+pool: my agent pool
+
+stages:
+  - stage: build
+    jobs:
+      - job: build
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/env'
+            backendAzureRmUseEntraIdForAuthentication: false
+            backendServiceArm: 'todo-service-connection'
+            backendAzureRmResourceGroupName: 'todo-rg001'
+            backendAzureRmStorageAccountName: 'todostorage001'
+            backendAzureRmContainerName: 'todocontainer01'
+            backendAzureRmKey: 'terraform.tfstate'
