@@ -1,13 +1,13 @@
-trigger: 
- branches:
-   include:
-     - feature/*
+trigger: none
+#  branches:
+#    include:
+#      - feature/*
    # exclude:
 #      - main
 
 variables: 
- - name: PATH
-   value: $(System.DefaultWorkingDirectory)/env/${{ parameters.environment }}
+ - name: Work_DIR
+   value: $(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}
 
 parameters:
   - name: environment
@@ -38,7 +38,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            workingDirectory: '$(PATH)'
+            workingDirectory: '$(WORK_DIR)'
             backendAzureRmUseEntraIdForAuthentication: false
             backendServiceArm: 'todo-service-connection'
             backendAzureRmStorageAccountName: 'todostorage110'
