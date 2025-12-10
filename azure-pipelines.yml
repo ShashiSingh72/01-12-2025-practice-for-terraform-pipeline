@@ -41,7 +41,6 @@ stages:
             workingDirectory: '$(PATH)'
             backendAzureRmUseEntraIdForAuthentication: false
             backendServiceArm: 'todo-service-connection'
-            backendAzureRmResourceGroupName: 'todo-rg001'
-            backendAzureRmStorageAccountName: 'todostorage001'
-            backendAzureRmContainerName: 'todocontainer01'
+            backendAzureRmStorageAccountName: 'todostorage110'
+            backendAzureRmContainerName: 'todocontainer'
             backendAzureRmKey: 'terraform.tfstate'
