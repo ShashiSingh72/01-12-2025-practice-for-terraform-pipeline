@@ -38,7 +38,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/env'
+            workingDirectory: '(PATH$))'
             backendAzureRmUseEntraIdForAuthentication: false
             backendServiceArm: 'todo-service-connection'
             backendAzureRmResourceGroupName: 'todo-rg001'
