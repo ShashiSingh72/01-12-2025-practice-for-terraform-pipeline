@@ -116,3 +116,41 @@ nsgs = {
     }
   }
 }
+
+avsets = {
+  "avset1" = {
+    AvailabilitySetname = "AvailabilitySet1"
+    location            = "centralindia"
+    rgname              = "mydev-rg"
+  }
+}
+
+vms = {
+  "vms1" = {
+    vmname              = "mydev-vm01"
+    rgname              = "mydev-rg"
+    location            = "centralindia"
+    size                = "Standard_F2"
+    admin_username      = "username"
+    admin_password      = "Password@12345"
+    AvailabilitySetname = "AvailabilitySet1"
+    nicname             = "mydev-nic"
+
+    os_disk = {
+      "disk1" = {
+        caching              = "ReadWrite"
+        storage_account_type = "Standard_LRS"
+      }
+    }
+
+    source_image_reference = {
+      "source_image_reference" = {
+        publisher = "Canonical"
+        offer     = "0001-com-ubuntu-server-jammy"
+        sku       = "22_04-lts"
+        version   = "latest"
+      }
+
+    }
+  }
+}

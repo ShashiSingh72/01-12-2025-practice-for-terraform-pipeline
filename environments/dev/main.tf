@@ -25,3 +25,15 @@ module "nic" {
   source = "../../modules/Network_interface_card"
   nics   = var.nics
 }
+
+module "avset" {
+  depends_on = [ module.rg]
+  source = "../../modules/Availability_set"
+  avsets   = var.avsets
+}
+
+module "vms" {
+  depends_on = [ module.rg, module.nic, module.avset]
+  source = "../../modules/Virtual_machine"
+  vms   = var.vms
+}
