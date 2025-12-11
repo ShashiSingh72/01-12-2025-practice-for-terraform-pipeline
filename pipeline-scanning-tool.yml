@@ -20,18 +20,21 @@ steps:
     backendAzureRmContainerName: 'todocontainer'
     backendAzureRmKey: 'terraform.tfstate'
 
-- task: PowerShell@2
+- task: CmdLine@2
+  continueOnError: true
   inputs:
-    targetType: 'inline'
-    script: '''tflint --chdir="$(System.DefaultWorkingDirectory)" --recursive --format junit > tflint-report.xml '''
+    script: 'tflint --chdir=$(System.DefaultWorkingDirectory) --recursive --format junit > tflint-report.xml'
 
-
-# - task: PowerShell@2
-#   inputs:
-#     targetType: 'inline'
-#     script: 'checkov -d "$(System.DefaultWorkingDirectory)/environments" -o junitxml > result.xml'
-
-- task: PowerShell@2
+- task: PublishTestResults@2
   inputs:
-    targetType: 'inline'
-    script: 'checkov -d "$(System.DefaultWorkingDirectory)" -o junitxml > checkov-report.xml'
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'tflint-report.xml'
+
+- task: CmdLine@2
+  inputs:
+    script: 'checkov -d $(System.DefaultWorkingDirectory) -o junitxml > checkov-report.xml'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'checkov-report.xml'
