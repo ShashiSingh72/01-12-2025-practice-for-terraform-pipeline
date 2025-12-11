@@ -3,10 +3,10 @@ trigger: none
 pool: my agent pool
 
 steps: 
-- task: TerraformInstaller@1
-  displayName: Terraform Install
-  inputs:
-    terraformVersion: 'latest'
+# - task: TerraformInstaller@1
+#   displayName: Terraform Install
+#   inputs:
+#     terraformVersion: 'latest'
 
 - task: TerraformTask@5
   displayName: Terraform Init
