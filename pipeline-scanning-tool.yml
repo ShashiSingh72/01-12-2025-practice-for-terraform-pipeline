@@ -26,7 +26,15 @@ steps:
 #     targetType: 'inline'
 #     script: 'checkov -d "$(System.DefaultWorkingDirectory)/environments" -o junitxml > result.xml'
 
-- task: PowerShell@2
+- task: UsePythonVersion@0
   inputs:
-    targetType: 'inline'
-    script: 'checkov -d "$(System.DefaultWorkingDirectory)" -o junitxml > checkovres.xml'
+    versionSpec: '3.x'
+
+- script: |
+    pip install checkov
+    checkov -v
+  displayName: 'Install Checkov'
+
+- script: |
+    checkov -d "$(System.DefaultWorkingDirectory)" -o junitxml > checkov-report.xml
+  displayName: 'Run Checkov'
