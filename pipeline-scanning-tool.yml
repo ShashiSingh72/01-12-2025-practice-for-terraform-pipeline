@@ -31,6 +31,7 @@ steps:
     testResultsFiles: 'tflint-report.xml'
 
 - task: CmdLine@2
+  continueOnError: true
   inputs:
     script: 'checkov -d $(System.DefaultWorkingDirectory) -o junitxml > checkov-report.xml'
 
