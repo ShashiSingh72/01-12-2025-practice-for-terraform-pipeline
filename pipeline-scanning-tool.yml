@@ -4,10 +4,12 @@ pool: my agent pool
 
 steps: 
 - task: TerraformInstaller@1
+  displayName: Terraform Install
   inputs:
     terraformVersion: 'latest'
 
 - task: TerraformTask@5
+  displayName: Terraform Init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -17,4 +19,9 @@ steps:
     backendAzureRmStorageAccountName: 'todostorageaccount001'
     backendAzureRmContainerName: 'todocontainer'
     backendAzureRmKey: 'terraform.tfvars'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'checkov -d . -o junitxml > result.xml'
 
