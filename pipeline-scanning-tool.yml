@@ -3,9 +3,9 @@ trigger: none
 pool: my agent pool
 
 stages:
-  - stage: ScanningTools
+  - stage: TerraformInstalandInit
     jobs:
-      - job: ScanningTools
+      - job: TerraformInstalandInit
         steps:
 
         - task: TerraformInstaller@1
@@ -24,6 +24,12 @@ stages:
             backendAzureRmStorageAccountName: 'todostorageaccount001'
             backendAzureRmContainerName: 'todocontainer'
             backendAzureRmKey: 'terraform.tfstate'
+
+
+  - stage: ScanningTools
+    jobs:
+      - job: ScanningTools
+        steps:
 
         - task: tfsec@1
           displayName: Tfsec
