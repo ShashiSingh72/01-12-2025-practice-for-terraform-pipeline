@@ -23,5 +23,10 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
+    script: 'pip3 install checkov'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
     script: 'checkov -d $(System.DefaultWorkingDirectory) -o junitxml > result.xml'
 
