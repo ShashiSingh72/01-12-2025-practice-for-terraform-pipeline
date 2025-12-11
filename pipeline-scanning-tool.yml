@@ -20,24 +20,15 @@ steps:
     backendAzureRmContainerName: 'todocontainer'
     backendAzureRmKey: 'terraform.tfvars'
 
-# Python install (compulsory)
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
+# REMOVE UsePythonVersion (self-hosted par nahi chalega)
 
-# Single PowerShell task to install Checkov
 - task: PowerShell@2
-  displayName: "Install Checkov"
+  displayName: Install Checkov
   inputs:
-    targetType: 'inline'
     script: |
       python --version
-      pip --version
       pip install checkov
-
 
 - task: PowerShell@2
   inputs:
-    targetType: 'inline'
     script: 'checkov -d $(System.DefaultWorkingDirectory) -o junitxml > result.xml'
-
