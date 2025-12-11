@@ -20,10 +20,21 @@ steps:
     backendAzureRmContainerName: 'todocontainer'
     backendAzureRmKey: 'terraform.tfvars'
 
+# Python install (compulsory)
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+
+# Single PowerShell task to install Checkov
 - task: PowerShell@2
+  displayName: "Install Checkov"
   inputs:
     targetType: 'inline'
-    script: 'pip3 install checkov'
+    script: |
+      python --version
+      pip --version
+      pip install checkov
+
 
 - task: PowerShell@2
   inputs:
