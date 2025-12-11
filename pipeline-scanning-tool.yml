@@ -2,42 +2,56 @@ trigger: none
 
 pool: my agent pool
 
-steps: 
-- task: TerraformInstaller@1
-  displayName: Terraform Install
-  inputs:
-    terraformVersion: 'latest'
+stages:
+  - stage: ScanningTools
+    jobs:
+      - job: ScanningTools
+        steps:
 
-- task: TerraformTask@5
-  displayName: Terraform Init
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/environments'
-    backendAzureRmUseEntraIdForAuthentication: false
-    backendServiceArm: 'todo-service-connection'
-    backendAzureRmStorageAccountName: 'todostorageaccount001'
-    backendAzureRmContainerName: 'todocontainer'
-    backendAzureRmKey: 'terraform.tfstate'
+        - task: TerraformInstaller@1
+          displayName: Terraform Install
+          inputs:
+            terraformVersion: 'latest'
 
-- task: CmdLine@2
-  continueOnError: true
-  inputs:
-    script: 'tflint --chdir=$(System.DefaultWorkingDirectory) --recursive --format junit > tflint-report.xml'
+        - task: TerraformTask@5
+          displayName: Terraform Init
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments'
+            backendAzureRmUseEntraIdForAuthentication: false
+            backendServiceArm: 'todo-service-connection'
+            backendAzureRmStorageAccountName: 'todostorageaccount001'
+            backendAzureRmContainerName: 'todocontainer'
+            backendAzureRmKey: 'terraform.tfstate'
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'tflint-report.xml'
-    testRunTitle: 'TFlint'
+        - task: tfsec@1
+          displayName: Tfsec
+          inputs:
+            version: 'v1.26.0'
 
-- task: CmdLine@2
-  continueOnError: true
-  inputs:
-    script: 'checkov -d $(System.DefaultWorkingDirectory) -o junitxml > checkov-report.xml'
+        - task: CmdLine@2
+          displayName: Tflint
+          continueOnError: true
+          inputs:
+            script: 'tflint --chdir=$(System.DefaultWorkingDirectory) --recursive --format junit > tflint-report.xml'
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'checkov-report.xml'
-    testRunTitle: 'checkov'
+        - task: PublishTestResults@2
+          displayName: tflint result
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: 'tflint-report.xml'
+            testRunTitle: 'TFlint'
+
+        - task: CmdLine@2
+          displayName: checkov
+          continueOnError: true
+          inputs:
+            script: 'checkov -d $(System.DefaultWorkingDirectory) -o junitxml > checkov-report.xml'
+
+        - task: PublishTestResults@2
+          displayName: checkov-result
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: 'checkov-report.xml'
+            testRunTitle: 'checkov'
