@@ -1,0 +1,20 @@
+trigger: none
+
+pool: my agent pool
+
+steps: 
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+    backendAzureRmUseEntraIdForAuthentication: false
+    backendServiceArm: 'todo-service-connection'
+    backendAzureRmStorageAccountName: 'todostorageaccount001'
+    backendAzureRmContainerName: 'todocontainer'
+    backendAzureRmKey: 'terraform.tfvars'
+
