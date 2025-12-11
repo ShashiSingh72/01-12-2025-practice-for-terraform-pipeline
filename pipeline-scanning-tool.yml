@@ -29,6 +29,7 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: 'tflint-report.xml'
+    testRunTitle: 'TFlint'
 
 - task: CmdLine@2
   continueOnError: true
@@ -39,3 +40,4 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: 'checkov-report.xml'
+    testRunTitle: 'checkov'
