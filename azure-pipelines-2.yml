@@ -3,8 +3,9 @@ trigger: none
 pool: my agent pool
 
 variables: 
-- name: svc
-  value: 'todo-service-connection'
+- group: variable group
+- name: work
+
 
 steps:
 - task: TerraformInstaller@1
@@ -15,7 +16,8 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: '$(svc)'
+    workingDirectory: 'work/environments/dev'
+    backendServiceArm: 'todo-service-connection'
     backendAzureRmStorageAccountName: 'todostorageaccount001'
     backendAzureRmContainerName: 'todocontainer'
     backendAzureRmKey: 'terraform.tfstate'
