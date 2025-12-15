@@ -24,7 +24,7 @@ stages:
         - task: PowerShell@2
           inputs:
             targetType: 'inline'
-            script: 'tfsec "$(System.DefaultWorkingDirectory)" -f junit > tfsecresult.xml'
+            script: 'tfsec "$(System.DefaultWorkingDirectory)" -f junit --out tfsecresult.xml'
 
         - task: PublishTestResults@2
           inputs:
