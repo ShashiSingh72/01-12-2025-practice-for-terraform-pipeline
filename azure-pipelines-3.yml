@@ -1,0 +1,40 @@
+trigger: none
+
+pool: my agent pool
+
+stages:
+  - stage: build
+    jobs:
+      - job: build
+        steps:
+        - task: TerraformInstaller@1
+          displayName: terraformInstall
+          inputs:
+            terraformVersion: 'latest'
+
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+            backendServiceArm: 'todo-service-connection'
+            backendAzureRmStorageAccountName: 'todobackend110'
+            backendAzureRmContainerName: 'todocontainer'
+            backendAzureRmKey: 'terraform.tfstate'
+        - task: PowerShell@2
+          displayName: Run tfsec
+          continueOnError: true
+          inputs:
+            targetType: 'inline'
+            script: |
+              tfsec "$(System.DefaultWorkingDirectory)" `
+                --format junit `
+                --out "$(System.DefaultWorkingDirectory)\tfsecresult.xml"
+
+        - task: PublishTestResults@2
+          displayName: Publish tfsec results
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: 'tfsecresult.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)'
+            testRunTitle: 'tfsec IaC Scan'
