@@ -30,4 +30,3 @@ stages:
               tfsec "$(System.DefaultWorkingDirectory)" `
                 --format junit `
                 --out "$(System.DefaultWorkingDirectory)\tfsecresult.xml"
-
