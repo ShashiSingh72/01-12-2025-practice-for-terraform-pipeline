@@ -7,6 +7,14 @@ rgs = {
       team = "dev"
     }
   }
+  "rg2" = {
+    rgname     = mydev-rg
+    location   = centralindia
+    managed_by = "terraform"
+    tags = {
+      team = "dev"
+    }
+  }
 }
 
 stgs = {
@@ -154,3 +162,4 @@ vms = {
     }
   }
 }
+
