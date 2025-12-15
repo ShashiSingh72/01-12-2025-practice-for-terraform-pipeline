@@ -21,7 +21,7 @@ stages:
             backendAzureRmStorageAccountName: 'todobackend110'
             backendAzureRmContainerName: 'todocontainer'
             backendAzureRmKey: 'terraform.tfstate'
-        - task: tfsec@1
+        - task: PowerShell@2
           inputs:
-            version: 'v1.26.0'
-            dir: '$(System.DefaultWorkingDirectory)'
+            targetType: 'inline'
+            script: 'tfsec $(System.DefaultWorkingDirectory) -f junit >tfsecresult.xml'
