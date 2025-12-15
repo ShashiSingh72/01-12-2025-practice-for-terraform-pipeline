@@ -16,7 +16,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
             backendServiceArm: 'todo-service-connection'
             backendAzureRmStorageAccountName: 'todobackend110'
             backendAzureRmContainerName: 'todocontainer'
