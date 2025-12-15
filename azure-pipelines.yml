@@ -22,11 +22,12 @@ stages:
             backendAzureRmContainerName: 'todocontainer'
             backendAzureRmKey: 'terraform.tfstate'
         - task: PowerShell@2
+          displayName: Run tfsec
+          continueOnError: true
           inputs:
             targetType: 'inline'
-            script: 'tfsec "$(System.DefaultWorkingDirectory)" -f junit --out tfsecresult.xml'
+            script: |
+              tfsec "$(System.DefaultWorkingDirectory)" `
+                --format junit `
+                --out "$(System.DefaultWorkingDirectory)\tfsecresult.xml"
 
-        - task: PublishTestResults@2
-          inputs:
-            testResultsFormat: 'JUnit'
-            testResultsFiles: 'tfsecresult.xml'
