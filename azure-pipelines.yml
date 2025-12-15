@@ -30,3 +30,11 @@ stages:
               tfsec "$(System.DefaultWorkingDirectory)" `
                 --format junit `
                 --out "$(System.DefaultWorkingDirectory)\tfsecresult.xml"
+
+        - task: PublishTestResults@2
+          displayName: Publish tfsec results
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: 'tfsecresult.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)'
+            testRunTitle: 'tfsec IaC Scan'
